@@ -1,12 +1,4 @@
-import { useState } from "react";
-import {
-  Center,
-  Tooltip,
-  UnstyledButton,
-  Stack,
-  rem,
-  Box,
-} from "@mantine/core";
+import { UnstyledButton, Stack, rem, Text } from "@mantine/core";
 import {
   IconHome2,
   IconFileText,
@@ -21,22 +13,28 @@ import { useRouter } from "next/router";
 
 interface NavbarLinkProps {
   icon: typeof IconHome2;
-  label: string;
+
+  text: string;
   active?: boolean;
   onClick?(): void;
 }
 
-function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
+function NavbarLink({
+  icon: Icon,
+  text,
+
+  active,
+  onClick,
+}: NavbarLinkProps) {
   return (
-    <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-      <UnstyledButton
-        onClick={onClick}
-        className={classes.link}
-        data-active={active || undefined}
-      >
-        <Icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
-      </UnstyledButton>
-    </Tooltip>
+    <UnstyledButton
+      onClick={onClick}
+      className={classes.link}
+      data-active={active || undefined}
+    >
+      <Icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
+      <Text className={classes.linkText}>{text}</Text>
+    </UnstyledButton>
   );
 }
 
@@ -49,16 +47,18 @@ const mockdata = [
 ];
 
 export function NavBar() {
-  const [active, setActive] = useState(2);
   const router = useRouter();
   const path = router.pathname;
 
-  const links = mockdata.map((link, index) => (
+  const links = mockdata.map((link) => (
     <NavbarLink
       {...link}
       key={link.label}
+      text={link.label}
       active={
-        link.link === "/" ? path === "/dashboard" : path.includes(link.link)
+        link.link === "/"
+          ? path === "/dashboard"
+          : path.includes(link.label.toLowerCase())
       }
       onClick={() => router.push(`/dashboard/${link.link}`)}
     />
@@ -66,17 +66,14 @@ export function NavBar() {
 
   return (
     <nav className={classes.navbar}>
-      <Center>
-        <Box c="gray.0">Some Lgo</Box>
-      </Center>
       <div className={classes.navbarMain}>
         <Stack justify="center" gap={0}>
           {links}
         </Stack>
       </div>
       <Stack justify="center" gap={0}>
-        <NavbarLink icon={IconSwitchHorizontal} label="Change account" />
-        <NavbarLink icon={IconLogout} label="Logout" />
+        <NavbarLink icon={IconSwitchHorizontal} text="Change Account" />
+        <NavbarLink icon={IconLogout} text="Logout" />
       </Stack>
     </nav>
   );

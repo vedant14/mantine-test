@@ -1,20 +1,20 @@
 import { ReactNode } from "react";
-import { Flex, Box } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { NavBar } from "./NavBar";
-
+import classes from "./Layout.module.css";
 interface LayoutProps {
   children: ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <Flex>
+    <Box>
       <NavBar />
-      <Box bg="#ebefff" w="100%">
+      <Box className={classes.child}>
         <Box p="xl" mt="md">
           {children}
         </Box>
       </Box>
-    </Flex>
+    </Box>
   );
 }
