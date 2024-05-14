@@ -19,13 +19,7 @@ interface NavbarLinkProps {
   onClick?(): void;
 }
 
-function NavbarLink({
-  icon: Icon,
-  text,
-
-  active,
-  onClick,
-}: NavbarLinkProps) {
+function NavbarLink({ icon: Icon, text, active, onClick }: NavbarLinkProps) {
   return (
     <UnstyledButton
       onClick={onClick}
